@@ -62,7 +62,7 @@ RUN printf "edgebox\nedgebox" | passwd && \
 COPY --from=build /ragged/vendor /home/box/vendor
 COPY --from=build /ragged/site /home/box/site
 COPY --from=build /ragged/data /home/box/data
-COPY --from=build /ragged/deploy/* /ragged/download/*.guff /home/box/
+COPY --from=build /ragged/deploy/* /ragged/download/*.gguf /home/box/
 RUN chown -R box:box /home/box && \
     apt-get update && apt-get -y --no-install-suggests --no-install-recommends install \
     curl \
