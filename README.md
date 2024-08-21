@@ -1,2 +1,15 @@
-# the-ragged-edge-box
-RAGGED EDGE BOX: Your Personal AI-Powered Document Search System
+# The RAGged Edge Box
+
+To build the image you'll need:
+
+* Linux
+* git
+* wget
+* Docker
+
+# Building
+
+```bash
+docker build . -t textualization:ragged
+```
+

@@ -1,0 +1,6 @@
+[submodule "sqlite-vss"]
+	path = sqlite-vss
+	url = https://github.com/asg017/sqlite-vss
+[submodule "llama.cpp"]
+	path = llama.cpp
+	url = https://github.com/ggerganov/llama.cpp

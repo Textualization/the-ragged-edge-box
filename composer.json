@@ -1,0 +1,24 @@
+{
+    "name": "textualization/the-ragged-edge-box",
+    "description": "Self-contained Retrieval Agumented Generation (RAG) system.",
+    "type": "p",
+    "require": {
+        "textualization/semantic-search": "^0.0.5",
+        "guzzlehttp/guzzle": "^7.8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6"
+    },
+    "license": "APL-2",
+    "autoload": {
+        "psr-4": {
+            "Textualization\\TheRaggedEdgeBox\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Pablo Duboue",
+            "email": "pablo.duboue@gmail.com"
+        }
+    ]
+}

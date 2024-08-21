@@ -1,0 +1,8 @@
+[Unit]
+Description=PHP local server
+
+[Service]
+ExecStart=/usr/bin/su box /home/box/launch-php.sh
+
+[Install]
+WantedBy=multi-user.target

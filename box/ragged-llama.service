@@ -1,0 +1,8 @@
+[Unit]
+Description=llama.cpp server
+
+[Service]
+ExecStart=/usr/bin/su box /home/box/launch-llama.sh
+
+[Install]
+WantedBy=multi-user.target
