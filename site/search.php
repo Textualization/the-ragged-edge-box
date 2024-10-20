@@ -207,6 +207,16 @@ foreach($results as $result) {
         </div>
     </div>
 
+    <footer class="position-fixed bottom-0 end-0 p-3">
+        <a href="#" class="text-decoration-none text-dark me-3">
+            <i class="bi bi-gear"></i>
+        </a>
+        <a href="help.php" class="text-decoration-none text-dark">
+            <i class="bi bi-question-circle"></i>
+        </a>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {

@@ -5,8 +5,9 @@ WORKDIR /ragged
 RUN apt-get update && apt-get -y install --no-install-suggests build-essential git composer libgomp1 libblas3 liblapack3 wget php8.2-cli php8.2-curl php8.2-xml cmake libatlas-base-dev liblapack-dev debhelper-compat autoconf libtool automake chrpath lynx libreadline-dev tcl8.6-dev
 COPY . .
 RUN composer install && \
-  composer exec -- php -r "require 'vendor/autoload.php'; OnnxRuntime\Vendor::check();" && \
-  composer exec -- php -r "require 'vendor/autoload.php'; Textualization\SentenceTransphormers\Vendor::check();"
+    composer exec -- php -r "require 'vendor/autoload.php'; OnnxRuntime\Vendor::check();" && \
+    composer exec -- php -r "require 'vendor/autoload.php'; Textualization\SentenceTransphormers\Vendor::check();" && \
+    composer licenses -f json > licenses.json
 
 # Backport the sqlite3 version from Debian testing
 RUN mkdir /ragged/deploy && \
@@ -14,7 +15,9 @@ RUN mkdir /ragged/deploy && \
        /ragged/box/*.ini \
        /ragged/box/*.service \
        /ragged/box/*.php \
-       /ragged/box/*.network /ragged/deploy && \
+       /ragged/box/*.network \
+       /ragged/licenses.json \
+       /ragged/deploy && \
     cd /ragged/download && \
     dpkg-source -x sqlite3_3.46.0-1.dsc && \
     cd sqlite3-3.46.0 && \
@@ -73,6 +76,7 @@ RUN chown -R box:box /home/box && \
     rm /home/box/sqlite3_3.46.0-1_amd64.deb /home/box/libsqlite3-0_3.46.0-1_amd64.deb && \
     echo 'ragged' > /etc/hostname && \
     echo '/dev/sda1 / ext3 rw,noatime 0 0' > /etc/fstab && \
+    for f in /usr/share/doc/*; do if [ -f "$f/copyright" ]; then echo $f; grep '^License: ' $f/copyright |sort|uniq; fi; done | perl -pe 's/License: /\t/' > /home/box/site/box-licenses.txt && \
     true `# set PHP.ini files` && \
     mv /home/box/php.ini /etc/php/8.2/cli/ `# set PHP.ini files` && \
     true `# set systemd files` && \

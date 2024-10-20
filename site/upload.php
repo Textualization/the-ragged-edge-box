@@ -191,7 +191,7 @@ if($text === null) {
         <a href="#" class="text-decoration-none text-dark me-3">
             <i class="bi bi-gear"></i>
         </a>
-        <a href="#" class="text-decoration-none text-dark">
+        <a href="help.php" class="text-decoration-none text-dark">
             <i class="bi bi-question-circle"></i>
         </a>
     </footer>
