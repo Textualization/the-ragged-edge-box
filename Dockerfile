@@ -70,7 +70,7 @@ RUN chown -R box:box /home/box && \
     apt-get update && apt-get -y --no-install-suggests --no-install-recommends install \
     curl \
     php8.2-cli php8.2-sqlite3 php8.2-mbstring php8.2-curl \
-    libgomp1 libblas3 liblapack3 linux-image-amd64 systemd-sysv libreadline8 zlib1g \
+    libgomp1 libblas3 liblapack3 linux-image-cloud-amd64 systemd-sysv libreadline8 zlib1g \
     file poppler-utils antiword pandoc && \
     dpkg -i /home/box/libsqlite3-0_3.46.0-1_amd64.deb /home/box/sqlite3_3.46.0-1_amd64.deb && \
     rm /home/box/sqlite3_3.46.0-1_amd64.deb /home/box/libsqlite3-0_3.46.0-1_amd64.deb && \

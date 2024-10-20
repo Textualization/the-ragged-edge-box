@@ -70,7 +70,7 @@
         <rasd:Description>SATA Controller</rasd:Description>
         <rasd:ElementName>sataController0</rasd:ElementName>
         <rasd:InstanceID>5</rasd:InstanceID>
-        <rasd:ResourceSubType>AHCI</rasd:ResourceSubType>
+        <rasd:ResourceSubType>VirtioSCSI</rasd:ResourceSubType>
         <rasd:ResourceType>20</rasd:ResourceType>
       </Item>
       <Item>
