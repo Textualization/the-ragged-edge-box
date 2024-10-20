@@ -68,6 +68,9 @@ if(isset($_GET["download"])) {
    }else{
        echo '  <div class="tab-pane fade active show" id="search" role="tabpanel">';
    }
+   if(count($config["databases"]) == 0) {
+       echo '<p>Upload a document to get started.</p>';
+   }else{
 ?>
     <form action="search.php" method="POST">
       <div class="input-group mb-3 pt-5 pb-2">
@@ -91,6 +94,9 @@ if(isset($_GET["download"])) {
         </div> <!-- btn-group -->
       </div> <!-- input-group -->
     </form>
+<?php
+   }
+?>
   </div> <!-- tab -->
   <div class="tab-pane fade" id="upload" role="tabpanel">
     <form action="upload.php" method="POST" enctype="multipart/form-data">
@@ -107,20 +113,28 @@ if(isset($_GET["download"])) {
         <div class="btn-group" id="btn-group-upload-idx" role="group" aria-label="Index">
 <?php
   $idx=0;
+  $selval = -1;
+  if(isset($config["default"])) {
+      $selval = $config["default"];
+  }
   foreach($config["databases"] as $db) {
       $name = 'uploadidx'.$idx;
-      $selected = $idx==$config["default"]?"checked":"";
-      echo '<input type="radio" class="btn-check" name="uploadidxradio" id="'.$name.'" value="'.$idx.'" '.$selected.'>';
+      $selected = $idx==$selval?" checked":"";
+      echo '<input type="radio" class="btn-check" name="uploadidxradio" id="'.$name.'" value="'.$idx.'"'.$selected.'>';
       echo '<label class="btn btn-outline-primary" for="'.$name.'">'.$db["name"].'</label>';
       $idx++;
-}
-      echo '<input type="radio" class="btn-check" name="uploadidxradio" id="uploadidxnew" value="new">';
-      echo '<label class="btn btn-outline-success" role="button" for="uploadidxnew" data-bs-toggle="collapse" data-bs-target="#newidxname" aria-expanded="false" aria-controls="newidxname">NEW</label>';
+  }
+  $selected = $selval==-1?" checked":"";
+  echo '<input type="radio" class="btn-check" name="uploadidxradio" id="uploadidxnew" value="new"'.$selected.'>';
+  echo '<label class="btn btn-outline-success" role="button" for="uploadidxnew" data-bs-toggle="collapse" data-bs-target="#newidxname" aria-expanded="false" aria-controls="newidxname">NEW</label>';
 ?>
         </div>
       </div> <!-- input group -->
-      <div class="input-group mb-3 pt-1 collapse" id="newidxname">
-        <input type="text" name="newidxname" class="form-control" placeholder="Name of new index" aria-label="Name of new Index" />
+<?php
+  $collapsed = $selval==-1?"":" collapse";
+  echo '<div class="input-group mb-3 pt-1 '.$collapsed.'" id="newidxname">';
+?>
+        <input type="text" name="newidxname" class="form-control" placeholder="Name of new index, leave empty for 'default'" aria-label="Name of new Index"/>
         <div class="input-group pt-2">
           <label for="btn-group-new-idx-type">Index type</label>
           <div class="btn-group ps-2" id="btn-group-new-idx-type" role="group" aria-label="Index type">
@@ -141,66 +155,70 @@ if(isset($_GET["download"])) {
    }else{
        echo '<div class="tab-pane fade" id="files" role="tabpanel">';
    }
+  if(!isset($config["default"])) {
+      echo '<p>No files indexed yet.</p>';
+  }else{
+      $files_db = $config["default"];
 ?>                            
     <label for="btn-group-files-idx">Index</label>
     <div class="input-group mb-3 pt-1">
       <div class="btn-group" id="btn-group-files-idx" role="group" aria-label="Index">
 <?php
-  $idx=0;
-  $files_db = $config["default"];
-  $files_section = "";
-  if(isset($_GET["files"])) {
-      [ $files_db, $files_section ] = \explode(":", $_GET["files"]);
-  }
-  foreach($config["databases"] as $db) {
-      $name = 'filesidx'.$idx;
-      $selected = $idx==$files_db?"checked":"";
-      echo '<input type="radio" class="btn-check" name="filesidxradio" id="'.$name.'" value="'.$idx.'" '.$selected.'>';
-      echo '<label class="btn btn-outline-primary" for="'.$name.'" role="button" data-bs-toggle="collapse" data-bs-target="#filesview'.$idx.'" aria-expanded="false" aria-controls="filesviewidx">'.$db["name"].'</label>';
-      $idx++;
-}
+      $idx=0;
+      $files_section = "";
+      if(isset($_GET["files"])) {
+          [ $files_db, $files_section ] = \explode(":", $_GET["files"]);
+      }
+      foreach($config["databases"] as $db) {
+          $name = 'filesidx'.$idx;
+          $selected = $idx==$files_db?"checked":"";
+          echo '<input type="radio" class="btn-check" name="filesidxradio" id="'.$name.'" value="'.$idx.'" '.$selected.'>';
+          echo '<label class="btn btn-outline-primary" for="'.$name.'" role="button" data-bs-toggle="collapse" data-bs-target="#filesview'.$idx.'" aria-expanded="false" aria-controls="filesviewidx">'.$db["name"].'</label>';
+          $idx++;
+      }
 ?>
       </div> <!-- btn-group -->
     </div> <!-- input-group -->
 <?php
-  $idx = 0;
-  foreach($config["databases"] as $db) {
-      $selected = $idx==$files_db?"checked":"";
-      $collapsed = $selected ? "" : " collapse ";
+     $idx = 0;
+     foreach($config["databases"] as $db) {
+         $selected = $idx==$files_db?"checked":"";
+         $collapsed = $selected ? "" : " collapse ";
 
-      echo '<div class="container$collapsed" idx="filesview$idx">';
-      if($selected && $files_section !== "") {
-          // read dir
-          $basedir = __DIR__."/../data/".$config["databases"][$idx]["file"]."/";
-          if($files_section === "/main") {
-              echo '<h5>Section: Default</h5>';
-          }else{
-              echo '<h5>Section: '.$files_section.'</h5>';
-              $basedir = "$basedir$files_section/";
-          }
-          $dir = \opendir($basedir);
-          echo '<a class="text-info" href="index.php?files='.$idx.':">Back</a><br/>';
+         echo '<div class="container$collapsed" idx="filesview$idx">';
+         if($selected && $files_section !== "") {
+             // read dir
+             $basedir = __DIR__."/../data/".$config["databases"][$idx]["file"]."/";
+             if($files_section === "/main") {
+                 echo '<h5>Section: Default</h5>';
+             }else{
+                 echo '<h5>Section: '.$files_section.'</h5>';
+                 $basedir = "$basedir$files_section/";
+             }
+             $dir = \opendir($basedir);
+             echo '<a class="text-info" href="index.php?files='.$idx.':">Back</a><br/>';
       
-          echo '<ul>';
-          while(false !== ( $fname = readdir($dir)) ) {
-              if (! is_dir($basedir.$fname)) {
-                  echo '<li><a class="text-info" href="index.php?files='.$idx.':'.$files_section.'&download='.urlencode($fname).'">'.$fname.'</a>';
-                  echo ' <a class="text-danger" href="index.php?files='.$idx.':'.$files_section.'&delete='.$fname.'">[delete]</a></li>';
-              }
-          }
-          echo '</ul>';
-          closedir($dir);
-      }else{
-          echo '<h5>Sections</h5>';
-          echo '<ul>';
-          echo '<li><a class="text-info" href="index.php?files='.$idx.':/main">Default</a></li>';
-          foreach($db["sections"] as $section) {
-              echo '<li><a class="text-info" href="index.php?files='.$idx.':'.$section.'">'.$section.'</a></li>';
-          }
-          echo '</ul>';
-          echo '</div>';
-      }
-      $idx++;   
+             echo '<ul>';
+             while(false !== ( $fname = readdir($dir)) ) {
+                 if (! is_dir($basedir.$fname)) {
+                     echo '<li><a class="text-info" href="index.php?files='.$idx.':'.$files_section.'&download='.urlencode($fname).'">'.$fname.'</a>';
+                     echo ' <a class="text-danger" href="index.php?files='.$idx.':'.$files_section.'&delete='.$fname.'">[delete]</a></li>';
+                 }
+             }
+             echo '</ul>';
+             closedir($dir);
+         }else{
+             echo '<h5>Sections</h5>';
+             echo '<ul>';
+             echo '<li><a class="text-info" href="index.php?files='.$idx.':/main">Default</a></li>';
+             foreach($db["sections"] as $section) {
+                 echo '<li><a class="text-info" href="index.php?files='.$idx.':'.$section.'">'.$section.'</a></li>';
+             }
+             echo '</ul>';
+             echo '</div>';
+         }
+         $idx++;   
+     }
   }
 ?>
 

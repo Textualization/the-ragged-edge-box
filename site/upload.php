@@ -96,7 +96,10 @@ if($uploadidx == "new") {
             $index_class = "\\Textualization\\SemanticSearch\\RerankedIndex";
             break;
     }
-    $name = $_POST["newidxname"];
+    $name = $_POST["newidxname"] ?? 'default';
+    if($name === "") {
+        $name = 'default';
+    }
     $slug = sluggify($name);
     \mkdir("../data/$slug");
     $config["databases"][] = [
@@ -162,26 +165,22 @@ if($text === null) {
 
     $target = $dir.$_FILES['upload']["full_path"];
     if(\file_exists($target)) {
-        //TODO stop in the middle (putting the uploaded file on a special hold area)
-        //TODO and ask user what to do, overrite or write to a different section
-        //TODO if overwrite is possible, the old entries will need to be deleted first
+        echo '<p>File already exists. Specify a different section to upload the new file or delete the existing file from the chosen section.</p>';
+    }else{
+        \copy($_FILES['upload']["tmp_name"], $target);
+    
+        $inded = \Textualization\SemanticSearch\Ingester::ingest($desc, [], [
+            "url"=>$url,
+            "title" => $_FILES['upload']["name"],
+            "text" => $text,
+            "section" => $section,
+            "license" => "confidential"
+        ]);
+        $endtime = microtime(true);
+        $timediff = $endtime - $starttime;
+    
+        echo 'Uploaded in '.$timediff;
     }
-
-    \copy($_FILES['upload']["tmp_name"], $target);
-    
-    $inded = \Textualization\SemanticSearch\Ingester::ingest($desc, [], [
-        "url"=>$url,
-        "title" => $_FILES['upload']["name"],
-        "text" => $text,
-        "section" => $section,
-        "license" => "confidential"
-    ]);
-    $endtime = microtime(true);
-    $timediff = $endtime - $starttime;
-    
-    echo 'Uploaded in '.$timediff;
-
-    //TODO: stats on how many bytes, tokens, chunks indexed
 }
 ?>
 
