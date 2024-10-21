@@ -1,5 +1,6 @@
 <?php
 $config = json_decode(\file_get_contents("../data/config.json"), true);
+$endpoint = $config['endpoint'] ?? 'http://127.0.0.1:8091';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -118,7 +119,7 @@ if(!isset($_POST["search"])) {
     $text = $index->fetch_document($results[0]->url, $results[0]->chunk_num)->text;
     $prompt = "<human>: $text\n$query\n<bot>:";
     $starttime = microtime(true);
-    $response = $client->request('POST', 'http://127.0.0.1:8091/completion',
+    $response = $client->request('POST', "$endpoint/completion",
                                  [ 'json' => [
                                      "prompt"=> $prompt,
                                      "mirostat_tau"=>4,
@@ -208,7 +209,7 @@ foreach($results as $result) {
     </div>
 
     <footer class="position-fixed bottom-0 end-0 p-3">
-        <a href="#" class="text-decoration-none text-dark me-3">
+        <a href="config.php" class="text-decoration-none text-dark me-3">
             <i class="bi bi-gear"></i>
         </a>
         <a href="help.php" class="text-decoration-none text-dark">

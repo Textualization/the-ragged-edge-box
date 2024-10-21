@@ -15,7 +15,10 @@ if(isset($_GET["download"])) {
     \fpassthru($fp);
     exit();
 }
-//TODO delete
+if(isset($_GET["delete"])) {
+    //TODO
+    die("Delete not yet implemented but you can delete a full database in config (the gear icon).");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -228,7 +231,7 @@ if(isset($_GET["download"])) {
     </main>
 
     <footer class="position-fixed bottom-0 end-0 p-3">
-        <a href="#" class="text-decoration-none text-dark me-3">
+        <a href="config.php" class="text-decoration-none text-dark me-3">
             <i class="bi bi-gear"></i>
         </a>
         <a href="help.php" class="text-decoration-none text-dark">

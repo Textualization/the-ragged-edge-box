@@ -54,7 +54,7 @@ require '../vendor/autoload.php';
     </div>
 
     <footer class="position-fixed bottom-0 end-0 p-3">
-        <a href="#" class="text-decoration-none text-dark me-3">
+        <a href="config.php" class="text-decoration-none text-dark me-3">
             <i class="bi bi-gear"></i>
         </a>
         <a href="#" class="text-decoration-none text-dark">
