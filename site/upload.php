@@ -15,11 +15,27 @@ function sluggify(string $str) : string {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The RAGged Edge Box</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <style>                               
+     @font-face {
+         font-family: 'Cabin Sketch';
+         font-style: normal;
+         font-weight: 400;
+         font-display: swap;
+         src: url(assets/cabin_sketch.ttf) format('truetype');
+     }
+     @font-face {
+         font-family: 'Neucha';
+         font-style: normal;
+         font-weight: 400;
+         font-display: swap;
+         src: url(assets/neucha.ttf) format('truetype');
+     }
+    </style>                                  
+    <link href="assets/bootswatch.min.css" rel="stylesheet">
+    <script src="assets/popper.min.js"></script>
+    <script src="assets/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="assets/bootstrap-icons.css">
                                
     <style>
         .answer {
@@ -196,6 +212,5 @@ if($text === null) {
         </a>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.min.js"></script>
 </body>
 </html>
