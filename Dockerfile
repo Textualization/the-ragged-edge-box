@@ -67,7 +67,7 @@ COPY --from=build /ragged/site /home/box/site
 COPY --from=build /ragged/data /home/box/data
 COPY --from=build /ragged/deploy/* /ragged/download/*.gguf /home/box/
 RUN chown -R box:box /home/box && \
-    apt-get update && apt-get -y --no-install-suggests --no-install-recommends install \
+    apt-get --allow-unauthenticated update && apt-get -y --allow-unauthenticated --no-install-suggests --no-install-recommends install \
     curl \
     php8.2-cli php8.2-sqlite3 php8.2-mbstring php8.2-curl \
     libgomp1 libblas3 liblapack3 linux-image-cloud-amd64 systemd-sysv libreadline8 zlib1g \
