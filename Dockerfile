@@ -2,7 +2,7 @@
 
 FROM debian:bookworm-slim AS build
 WORKDIR /ragged
-RUN apt-get update && apt-get -y install --no-install-suggests build-essential git composer libgomp1 libblas3 liblapack3 wget php8.2-cli php8.2-curl php8.2-xml cmake libatlas-base-dev liblapack-dev debhelper-compat autoconf libtool automake chrpath lynx libreadline-dev tcl8.6-dev
+RUN apt-get update && apt-get -y install --no-install-suggests build-essential git composer libgomp1 libblas3 liblapack3 wget php8.2-cli php8.2-curl php8.2-xml cmake libatlas-base-dev liblapack-dev debhelper-compat autoconf libtool automake chrpath lynx libreadline-dev tcl8.6-dev libicu-dev
 COPY . .
 RUN composer install && \
     composer exec -- php -r "require 'vendor/autoload.php'; OnnxRuntime\Vendor::check();" && \
@@ -19,12 +19,12 @@ RUN mkdir /ragged/deploy && \
        /ragged/licenses.json \
        /ragged/deploy && \
     cd /ragged/download && \
-    dpkg-source -x sqlite3_3.46.0-1.dsc && \
-    cd sqlite3-3.46.0 && \
+    dpkg-source -x sqlite3_3.46.1-6.dsc && \
+    cd sqlite3-3.46.1 && \
     ./debian/rules binary && \
     cd .. && \
-    dpkg -i libsqlite3-0_3.46.0-1_amd64.deb libsqlite3-dev_3.46.0-1_amd64.deb sqlite3_3.46.0-1_amd64.deb && \
-    cp libsqlite3-0_3.46.0-1_amd64.deb sqlite3_3.46.0-1_amd64.deb /ragged/deploy 
+    dpkg -i libsqlite3-0_3.46.1-6_amd64.deb libsqlite3-dev_3.46.1-6_amd64.deb sqlite3_3.46.1-6_amd64.deb && \
+    cp libsqlite3-0_3.46.1-6_amd64.deb sqlite3_3.46.1-6_amd64.deb /ragged/deploy 
 
 # compile the llama.cpp servers
 RUN cd /ragged/llama.cpp && \
@@ -72,8 +72,8 @@ RUN chown -R box:box /home/box && \
     php8.2-cli php8.2-sqlite3 php8.2-mbstring php8.2-curl \
     libgomp1 libblas3 liblapack3 linux-image-cloud-amd64 systemd-sysv libreadline8 zlib1g \
     file poppler-utils antiword pandoc && \
-    dpkg -i /home/box/libsqlite3-0_3.46.0-1_amd64.deb /home/box/sqlite3_3.46.0-1_amd64.deb && \
-    rm /home/box/sqlite3_3.46.0-1_amd64.deb /home/box/libsqlite3-0_3.46.0-1_amd64.deb && \
+    dpkg -i /home/box/libsqlite3-0_3.46.1-6_amd64.deb /home/box/sqlite3_3.46.1-6_amd64.deb && \
+    rm /home/box/sqlite3_3.46.1-6_amd64.deb /home/box/libsqlite3-0_3.46.1-6_amd64.deb && \
     echo 'ragged' > /etc/hostname && \
     echo '/dev/sda1 / ext3 rw,noatime 0 0' > /etc/fstab && \
     for f in /usr/share/doc/*; do if [ -f "$f/copyright" ]; then echo $f; grep '^License: ' $f/copyright |sort|uniq; fi; done | perl -pe 's/License: /\t/' > /home/box/site/box-licenses.txt && \

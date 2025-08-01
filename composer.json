@@ -3,7 +3,7 @@
     "description": "Self-contained Retrieval Agumented Generation (RAG) system.",
     "type": "p",
     "require": {
-        "textualization/semantic-search": "^0.0.5",
+        "textualization/semantic-search": "^0.0.6",
         "guzzlehttp/guzzle": "^7.8"
     },
     "require-dev": {
@@ -20,5 +20,8 @@
             "name": "Pablo Duboue",
             "email": "pablo.duboue@gmail.com"
         }
-    ]
+    ],
+    "config": {
+        "process-timeout": 2400
+    }
 }

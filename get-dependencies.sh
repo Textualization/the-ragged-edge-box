@@ -14,11 +14,11 @@ if [ ! -e download/bling-stable-lm-3b-4e1t-v0.Q4_K_M.gguf ]; then
 fi
 
 # download sqlite3 from testing
-if [ ! -e download/sqlite3_3.46.0-1.dsc ]; then
+if [ ! -e download/sqlite3_3.46.1-6.dsc ]; then
     cd download
-    for part in "-1.debian.tar.xz" ".orig.tar.xz" ".orig-www.tar.xz" "-1.dsc" 
+    for part in "-6.debian.tar.xz" ".orig.tar.xz" ".orig-www.tar.xz" "-6.dsc" 
     do
-        wget http://deb.debian.org/debian/pool/main/s/sqlite3/sqlite3_3.46.0$part || exit 3
+        wget http://deb.debian.org/debian/pool/main/s/sqlite3/sqlite3_3.46.1$part || exit 3
     done
     cd ..
 fi
